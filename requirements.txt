@@ -1,0 +1,18 @@
+# Data Extraction & Manipulation
+yfinance
+pandas
+numpy
+
+# Technical Analysis
+pandas-ta
+
+# Machine Learning & Modeling
+scikit-learn
+xgboost
+
+# Visualization
+matplotlib
+
+# Note: PyPortfolioOpt is optional for the "Lite" engine.
+# Uncomment the line below if you have C++ Build Tools installed.
+# PyPortfolioOpt
