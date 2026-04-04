@@ -9,6 +9,13 @@ pandas-ta
 # Machine Learning & Modeling
 scikit-learn
 xgboost
+hmmlearn  # Added for market regime detection using Hidden Markov Models (HMM)
+
+# Portfolio Optimization
+PyPortfolioOpt  # Recommended for shifting from Inverse Volatility to Mean-Variance Optimization
+
+# Backtesting
+backtrader  # Added for strategy performance simulation and Sharpe Ratio calculation
 
 # Visualization
 matplotlib
