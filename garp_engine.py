@@ -3,11 +3,16 @@ import pandas as pd
 import numpy as np
 import pandas_ta as ta
 import matplotlib.pyplot as plt
-from hmmlearn.hmm import GaussianHMM # Added for HMM Regime Detection
+from hmmlearn.hmm import GaussianHMM 
+from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import warnings
+
+# Suppress yfinance warnings for cleaner output
+warnings.filterwarnings('ignore')
 
 # Optional: Portfolio Optimization
 try:
@@ -18,13 +23,28 @@ except ImportError:
 
 # --- CONFIGURATION ---
 WATCHLIST = ['BBCA.JK', 'ANTM.JK', 'NVDA', 'AAPL', 'PNLF.JK', 'TLKM.JK', 'ASII.JK']
+BENCHMARK = '^JKSE' # Jakarta Composite Index (IHSG)
 
-def fetch_and_detect_regimes(tickers):
-    """
-    Phase 1 & 2: Data Engineering & HMM Regime Detection.
-    Transitions from K-Means to Hidden Markov Models.
-    """
-    print("--- Phase 1 & 2: Data Engineering & HMM Regime Detection ---")
+def detect_macro_regime(benchmark=BENCHMARK):
+    """Phase 1: HMM on Historical Time-Series Data"""
+    print(f"--- Phase 1: HMM Macro Regime Detection ({benchmark}) ---")
+    data = yf.Ticker(benchmark).history(period="2y")
+    
+    # Calculate daily returns and drop NaNs
+    returns = data['Close'].pct_change().dropna().values.reshape(-1, 1)
+    
+    # HMM properly applied to a time-series sequence
+    model = GaussianHMM(n_components=2, covariance_type="diag", n_iter=1000, random_state=42)
+    model.fit(returns)
+    current_state = model.predict(returns)[-1]
+    
+    regime = "High Volatility" if current_state == 1 else "Low Volatility / Steady"
+    print(f"Current Macro Market Regime detected as: {regime}")
+    return current_state
+
+def fetch_and_cluster(tickers):
+    """Phase 2: Data Engineering & Cross-Sectional Clustering"""
+    print("\n--- Phase 2: Cross-Sectional Asset Clustering ---")
     raw_data = []
     
     for t in tickers:
@@ -33,35 +53,26 @@ def fetch_and_detect_regimes(tickers):
         hist = stock.history(period="1y")
         
         if not hist.empty:
-            # Fundamentals (GARP Logic)
             pe = info.get('forwardPE', 0)
             growth = info.get('earningsQuarterlyGrowth', 0) * 100
-            # Handle growth for PEG calculation
             peg = pe / growth if (growth > 0 and pe) else 2.0 
             roe = info.get('returnOnEquity', 0)
             
-            # Technicals
             close = hist['Close']
             rsi = ta.rsi(close, length=14).iloc[-1] if 'ta' in globals() else 50
             vol = close.pct_change().rolling(20).std().iloc[-1]
             
-            raw_data.append({
-                'Ticker': t, 'PEG': peg, 'ROE': roe, 'RSI': rsi, 'Vol': vol
-            })
+            raw_data.append({'Ticker': t, 'PEG': peg, 'ROE': roe, 'RSI': rsi, 'Vol': vol})
             print(f"Data Extracted: {t}")
 
     df = pd.DataFrame(raw_data).fillna(0)
-
-    # Scaling Features
     features = ['PEG', 'ROE', 'RSI', 'Vol']
     scaler = StandardScaler()
     x_scaled = scaler.fit_transform(df[features])
     
-    # HMM Regime Detection
-    # GaussianHMM treats RSI and Volatility as a sequence of market states
-    model = GaussianHMM(n_components=3, covariance_type="diag", n_iter=1000, random_state=42)
-    model.fit(x_scaled)
-    df['Cluster'] = model.predict(x_scaled)
+    # Use K-Means for grouping different assets on the same timeline
+    kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+    df['Cluster'] = kmeans.fit_predict(x_scaled)
     
     return df
 
@@ -75,7 +86,6 @@ def train_prediction_model(ticker):
     df['Vol'] = df['Close'].pct_change().rolling(20).std()
     df['MA_Dist'] = (df['Close'] - df['Close'].rolling(50).mean()) / df['Close'].rolling(50).mean()
     
-    # Labeling: 1 if return > 5% in next 20 days
     df['Future_Return'] = df['Close'].shift(-20) / df['Close'] - 1
     df['Target'] = (df['Future_Return'] > 0.05).astype(int)
     
@@ -93,12 +103,12 @@ def train_prediction_model(ticker):
     return model
 
 def optimize_portfolio_v2(tickers):
-    """
-    Phase 4: Advanced Portfolio Optimization.
-    Uses Mean-Variance Optimization if PyPortfolioOpt is available.
-    """
+    """Phase 4: Advanced Portfolio Optimization"""
     print("\n--- Phase 4: Portfolio Optimization (V2) ---")
     data = yf.download(tickers, period="2y")['Close']
+    
+    # FIX: Forward-fill NaNs caused by mismatched international market holidays
+    data = data.ffill().dropna() 
     returns = data.pct_change().dropna()
     
     if HAS_PYPFOPT:
@@ -106,7 +116,7 @@ def optimize_portfolio_v2(tickers):
         mu = expected_returns.mean_historical_return(data)
         S = risk_models.sample_cov(data)
         ef = EfficientFrontier(mu, S)
-        weights = ef.max_sharpe() # Optimize for the best Sharpe Ratio
+        weights = ef.max_sharpe() 
         cleaned_weights = ef.clean_weights()
         return pd.Series(cleaned_weights)
     else:
@@ -116,13 +126,13 @@ def optimize_portfolio_v2(tickers):
         return inv_vol / inv_vol.sum()
 
 def visualize_regimes(df):
-    """Visualizes HMM states"""
+    """Visualizes Asset Clusters"""
     plt.figure(figsize=(10, 6))
     scatter = plt.scatter(df['Vol'], df['RSI'], c=df['Cluster'], cmap='viridis', s=100)
     for i, txt in enumerate(df['Ticker']):
         plt.annotate(txt, (df['Vol'].iloc[i], df['RSI'].iloc[i]), xytext=(5,5), textcoords='offset points')
-    plt.colorbar(scatter, label='HMM Regime ID')
-    plt.title('Algorithmic GARP Engine V2: HMM Market Regimes')
+    plt.colorbar(scatter, label='K-Means Cluster ID')
+    plt.title('Algorithmic GARP Engine V2: Asset Clusters')
     plt.xlabel('Volatility (Risk)')
     plt.ylabel('RSI (Momentum)')
     plt.grid(True, alpha=0.3)
@@ -130,19 +140,22 @@ def visualize_regimes(df):
 
 # --- MAIN EXECUTION ---
 if __name__ == "__main__":
-    # 1. HMM Regime Detection
-    df_results = fetch_and_detect_regimes(WATCHLIST)
-    print("\n--- HMM Regime Summary ---")
+    # 1. Macro Regime Detection
+    macro_state = detect_macro_regime()
+    
+    # 2. Cross-Sectional Asset Clustering
+    df_results = fetch_and_cluster(WATCHLIST)
+    print("\n--- Asset Cluster Summary ---")
     print(df_results[['Ticker', 'Cluster', 'Vol', 'RSI']].sort_values(by='Cluster'))
     
-    # 2. Train Prediction Benchmark
+    # 3. Train Prediction Benchmark
     train_prediction_model('NVDA')
     
-    # 3. Enhanced Portfolio Optimization
+    # 4. Enhanced Portfolio Optimization
     final_weights = optimize_portfolio_v2(WATCHLIST)
     print("\n--- Final Recommended Weights ---")
     for ticker, weight in final_weights.items():
         print(f"{ticker}: {weight*100:.2f}%")
-            
-    # 4. Show the Updated Chart
+        
+    # 5. Show the Chart
     visualize_regimes(df_results)
