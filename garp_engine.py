@@ -125,6 +125,63 @@ def optimize_portfolio_v2(tickers):
         inv_vol = 1 / volatility
         return inv_vol / inv_vol.sum()
 
+def run_backtest(tickers, weights, benchmark=BENCHMARK):
+    """Phase 5: Historical Backtesting against Benchmark"""
+    print(f"\n--- Phase 5: Historical Backtesting ({benchmark}) ---")
+    
+    # 1. Fetch historical data
+    # Suppress output during download for a cleaner console
+    data = yf.download(tickers, period="2y", progress=False)['Close'].ffill().dropna()
+    bench_data = yf.Ticker(benchmark).history(period="2y")['Close']
+    
+    # --- THE TIMEZONE FIX ---
+    # Strip timezone metadata and keep only the calendar date
+    data.index = pd.to_datetime(data.index).tz_localize(None).normalize()
+    bench_data.index = pd.to_datetime(bench_data.index).tz_localize(None).normalize()
+    # ------------------------
+    
+    # 2. Calculate daily returns
+    returns = data.pct_change().dropna()
+    bench_returns = bench_data.pct_change().dropna()
+    
+    # Align dates (handles mismatched trading days globally)
+    aligned_returns, aligned_bench = returns.align(bench_returns, join='inner', axis=0)
+    
+    # Ensure weights align with the columns of the return dataframe
+    aligned_weights = weights.reindex(aligned_returns.columns).fillna(0)
+    
+    # 3. Calculate Portfolio Returns via Matrix Multiplication
+    portfolio_returns = aligned_returns.dot(aligned_weights)
+    
+    # 4. Calculate Cumulative Returns
+    port_cum_returns = (1 + portfolio_returns).cumprod()
+    bench_cum_returns = (1 + aligned_bench).cumprod()
+    
+    # 5. Calculate Metrics
+    port_total_return = port_cum_returns.iloc[-1] - 1
+    bench_total_return = bench_cum_returns.iloc[-1] - 1
+    
+    port_max_dd = ((port_cum_returns / port_cum_returns.cummax()) - 1).min()
+    bench_max_dd = ((bench_cum_returns / bench_cum_returns.cummax()) - 1).min()
+    
+    port_sharpe = (portfolio_returns.mean() / portfolio_returns.std()) * np.sqrt(252)
+    bench_sharpe = (aligned_bench.mean() / aligned_bench.std()) * np.sqrt(252)
+    
+    # Print Results
+    print(f"Benchmark ({benchmark}) -> Return: {bench_total_return:.2%}, Max DD: {bench_max_dd:.2%}, Sharpe: {bench_sharpe:.2f}")
+    print(f"GARP Engine MVO   -> Return: {port_total_return:.2%}, Max DD: {port_max_dd:.2%}, Sharpe: {port_sharpe:.2f}")
+    
+    # 6. Visualize the Backtest
+    plt.figure(figsize=(12, 6))
+    plt.plot(port_cum_returns.index, port_cum_returns, label='GARP Engine V2.1 (MVO)', color='blue', linewidth=2)
+    plt.plot(bench_cum_returns.index, bench_cum_returns, label=f'Benchmark ({benchmark})', color='gray', linestyle='--')
+    plt.title('Phase 5: Backtest Performance (2 Years)')
+    plt.ylabel('Cumulative Return')
+    plt.xlabel('Date')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
 def visualize_regimes(df):
     """Visualizes Asset Clusters"""
     plt.figure(figsize=(10, 6))
@@ -157,5 +214,9 @@ if __name__ == "__main__":
     for ticker, weight in final_weights.items():
         print(f"{ticker}: {weight*100:.2f}%")
         
-    # 5. Show the Chart
+    # 5. Run the Backtest Simulation
+    run_backtest(WATCHLIST, final_weights, BENCHMARK)
+        
+    # 6. Show the Asset Cluster Chart
+    # Note: This will appear AFTER you close the Backtest chart window
     visualize_regimes(df_results)
