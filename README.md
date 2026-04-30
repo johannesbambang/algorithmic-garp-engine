@@ -1,4 +1,3 @@
-<img width="1211" height="817" alt="clusters_30042026_224308" src="https://github.com/user-attachments/assets/4d52241c-3749-4cda-a486-c8cd836ed9f1" />
 # Algorithmic GARP Engine V2 📈🤖
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
