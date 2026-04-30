@@ -75,6 +75,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
+```
 
 ### 2. Configure Your Universe
 Edit config.yaml:
@@ -87,29 +88,25 @@ market_settings:
 test_settings:
   test_watchlist: ["AAPL", "MSFT", "GOOG"]
   test_period: "1mo"
+```
 
-### 2. 📘 Beginner Investor Guide
+### 3. Run the Full Pipeline
+```bash
+python main.py
+```
+This will:
+- Detect the current macro regime (HMM)
+- Cluster your assets by volatility & momentum
+- Train an XGBoost predictor for the first ticker
+- Optimise portfolio weights (MVO)
+- Show cumulative return backtest vs. benchmark
+- Show asset cluster chart
 
-If you’re new to long‑term investing, we’ve also prepared a **companion guide** that covers:
-
-- USA vs. Indonesia investment vehicles
-- A 20‑year Moderate‑Aggressive portfolio allocation
-- Dividend compounding & tax‑free reinvestment strategies
-- Cost analysis (why low‑cost index funds win)
-
-Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
-
----
-
-### 📄 License
-
-This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
-
----
-
-<p align="center">
-  Made with 🔬 by <a href="https://github.com/johannesbambang">johannesbambang</a>
-</p>
+### 4. Smoke Test (for CI/CD)
+```bash
+python main.py --test-mode
+```
+Uses a minimal watchlist and short lookback to quickly verify the entire pipeline.
 
 ---
 
@@ -122,13 +119,13 @@ If you’re new to long‑term investing, we’ve also prepared a **companion gu
 - Dividend compounding & tax‑free reinvestment strategies
 - Cost analysis (why low‑cost index funds win)
 
-Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
+Read it here: **[BEGINNER_GUIDE.md](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/BEGINNER_GUIDE.md)**
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License – see [LICENSE](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) for details.
 
 ---
 
