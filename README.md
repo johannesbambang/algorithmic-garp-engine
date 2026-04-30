@@ -1,3 +1,4 @@
+<img width="1211" height="817" alt="clusters_30042026_224308" src="https://github.com/user-attachments/assets/4d52241c-3749-4cda-a486-c8cd836ed9f1" />
 # Algorithmic GARP Engine V2 📈🤖
 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
@@ -12,11 +13,13 @@
 
 *Backtest vs. Jakarta Composite Index (^JKSE)*
 
-![Backtest](./img/backtest_results.png)
+<img width="1501" height="817" alt="backtest_30042026_223645" src="https://github.com/user-attachments/assets/c30f2056-19dd-48e1-9195-0e061c69d528" />
+
 
 *Asset Clusters: Volatility vs. Momentum*
 
-![Clusters](./img/clusters.png)
+<img width="1211" height="817" alt="clusters_30042026_223631" src="https://github.com/user-attachments/assets/15abd758-7cac-45bc-aa5e-6d32bcdccca1" />
+
 
 ---
 
