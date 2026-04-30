@@ -12,13 +12,11 @@
 
 *Backtest vs. Jakarta Composite Index (^JKSE)*
 
-<img width="1501" height="817" alt="backtest_30042026_223645" src="https://github.com/user-attachments/assets/c30f2056-19dd-48e1-9195-0e061c69d528" />
-
+![Backtest](./img/backtest_results.png)
 
 *Asset Clusters: Volatility vs. Momentum*
 
-<img width="1211" height="817" alt="clusters_30042026_223631" src="https://github.com/user-attachments/assets/15abd758-7cac-45bc-aa5e-6d32bcdccca1" />
-
+![Clusters](./img/clusters.png)
 
 ---
 
@@ -32,9 +30,9 @@ We maximize the **Sharpe Ratio**, the industry‑standard measure of risk‑adju
 
 **Sharpe Ratio = (Rₚ – R_f) / σₚ**
 
-where  
-- Rₚ = expected portfolio return  
-- R_f = risk‑free rate  
+where:
+- Rₚ = expected portfolio return
+- R_f = risk‑free rate
 - σₚ = portfolio volatility (standard deviation)
 
 This ensures volatile assets receive lower weights, strictly enforcing capital preservation.
