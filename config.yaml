@@ -1,0 +1,22 @@
+# Algorithmic GARP Engine Configuration
+market_settings:
+  benchmark: "^JKSE"   # Jakarta Composite Index (IHSG)
+  watchlist:
+    - "BBCA.JK"
+    - "ANTM.JK"
+    - "NVDA"
+    - "AAPL"
+    - "PNLF.JK"
+    - "TLKM.JK"
+    - "ASII.JK"
+  lookback_period: "2y"
+
+model_params:
+  hmm_components: 2
+  xgboost_test_size: 0.2
+  cluster_count: 3
+
+# For --test-mode
+test_settings:
+  test_watchlist: ["AAPL", "MSFT", "GOOG"]
+  test_period: "1mo"
