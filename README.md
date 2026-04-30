@@ -12,11 +12,13 @@
 
 *Backtest vs. Jakarta Composite Index (^JKSE)*
 
-![Backtest](./img/backtest_results.png)
+<img width="1501" height="817" alt="backtest_30042026_224331" src="https://github.com/user-attachments/assets/f94712b9-f80d-484a-9f4a-34224dd03a07" />
+
 
 *Asset Clusters: Volatility vs. Momentum*
 
-![Clusters](./img/clusters.png)
+<img width="1211" height="817" alt="clusters_30042026_224308" src="https://github.com/user-attachments/assets/11a71761-4861-4e26-8796-31ac6463ae6b" />
+
 
 ---
 
@@ -44,18 +46,21 @@ Enriched features – **Parkinson Volatility**, **Average True Range (ATR)**, **
 
 ## 🏗️ Architecture
 algorithmic-garp-engine/
+```
+algorithmic-garp-engine/
 ├── src/
-│ ├── data_engine.py # yfinance extraction & K‑Means clustering
-│ ├── models.py # HMM regime detection + XGBoost training
-│ ├── optimizer.py # MVO / Inverse Volatility portfolio
-│ └── visualizer.py # Backtest chart & cluster plot
-├── .github/workflows/ # CI smoke test
-├── config.yaml # Tickers, benchmark, and test settings
-├── main.py # CLI orchestrator (supports --test-mode)
+│   ├── data_engine.py
+│   ├── models.py
+│   ├── optimizer.py
+│   └── visualizer.py
+├── .github/workflows/
+├── config.yaml
+├── main.py
 ├── requirements.txt
-├── BEGINNER_GUIDE.md # Companion investing guide
+├── BEGINNER_GUIDE.md
 ├── LICENSE
 └── README.md
+```
 
 ---
 
