@@ -45,7 +45,7 @@ Enriched features – **Parkinson Volatility**, **Average True Range (ATR)**, **
 ---
 
 ## 🏗️ Architecture
-algorithmic-garp-engine/
+
 ```
 algorithmic-garp-engine/
 ├── src/
@@ -75,3 +75,51 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
+
+## 📘 Beginner Investor Guide
+
+If you’re new to long‑term investing, we’ve also prepared a **companion guide** that covers:
+
+- USA vs. Indonesia investment vehicles
+- A 20‑year Moderate‑Aggressive portfolio allocation
+- Dividend compounding & tax‑free reinvestment strategies
+- Cost analysis (why low‑cost index funds win)
+
+Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  Made with 🔬 by <a href="https://github.com/johannesbambang">johannesbambang</a>
+</p>
+
+---
+
+## 📘 Beginner Investor Guide
+
+If you’re new to long‑term investing, we’ve also prepared a **companion guide** that covers:
+
+- USA vs. Indonesia investment vehicles
+- A 20‑year Moderate‑Aggressive portfolio allocation
+- Dividend compounding & tax‑free reinvestment strategies
+- Cost analysis (why low‑cost index funds win)
+
+Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  Made with 🔬 by <a href="https://github.com/johannesbambang">johannesbambang</a>
+</p>
