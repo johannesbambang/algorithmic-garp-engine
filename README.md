@@ -25,17 +25,50 @@
 ## 🧠 How It Works
 
 ### Market Regime Detection (HMM)
-A 2‑state Gaussian HMM separates the market into **Low Volatility / Steady** and **High Volatility** regimes.
+A 2‑state Gaussian HMM separates the market into **Low Volatility / Steady** and **High Volatility** regimes. This dynamic approach replaces static clustering, adapting to structural shifts in market volatility.
 
 ### Portfolio Optimization (MVO)
-We maximize the **Sharpe Ratio**:
-\[
-S_p = \frac{R_p - R_f}{\sigma_p}
-\]
+We maximize the **Sharpe Ratio**, the industry‑standard measure of risk‑adjusted return:
+
+**Sharpe Ratio = (Rₚ – R_f) / σₚ**
+
+where  
+- Rₚ = expected portfolio return  
+- R_f = risk‑free rate  
+- σₚ = portfolio volatility (standard deviation)
+
+This ensures volatile assets receive lower weights, strictly enforcing capital preservation.
 
 ### Supervised Learning (XGBoost)
-Enriched features (Parkinson Volatility, ATR, Dividend Yield, PE) predict >5% forward returns.
+Enriched features – **Parkinson Volatility**, **Average True Range (ATR)**, **Dividend Yield**, and **P/E Ratio** – are fed into an XGBoost classifier to predict >5% forward returns over the next 20 trading days.
 
 ---
 
 ## 🏗️ Architecture
+algorithmic-garp-engine/
+├── src/
+│ ├── data_engine.py # yfinance extraction & K‑Means clustering
+│ ├── models.py # HMM regime detection + XGBoost training
+│ ├── optimizer.py # MVO / Inverse Volatility portfolio
+│ └── visualizer.py # Backtest chart & cluster plot
+├── .github/workflows/ # CI smoke test
+├── config.yaml # Tickers, benchmark, and test settings
+├── main.py # CLI orchestrator (supports --test-mode)
+├── requirements.txt
+├── BEGINNER_GUIDE.md # Companion investing guide
+├── LICENSE
+└── README.md
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/johannesbambang/algorithmic-garp-engine.git
+cd algorithmic-garp-engine
+python -m venv .venv
+# Activate virtual environment:
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
