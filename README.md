@@ -125,7 +125,7 @@ Read it here: **[BEGINNER_GUIDE.md](https://github.com/johannesbambang/algorithm
 
 ## 📄 License
 
-This project is licensed under the MIT License – see [LICENSE](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository#disclaimer) for details.
+This project is licensed under the MIT License – see **[LICENSE](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/LICENSE.md)** for details.
 
 ---
 
