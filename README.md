@@ -76,7 +76,19 @@ python -m venv .venv
 # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 
-## 📘 Beginner Investor Guide
+### 2. Configure Your Universe
+Edit config.yaml:
+```bash
+market_settings:
+  benchmark: "^JKSE"
+  watchlist: ['BBCA.JK', 'ANTM.JK', 'NVDA', 'AAPL', 'PNLF.JK', 'TLKM.JK', 'ASII.JK']
+  lookback_period: "2y"
+
+test_settings:
+  test_watchlist: ["AAPL", "MSFT", "GOOG"]
+  test_period: "1mo"
+
+### 2. 📘 Beginner Investor Guide
 
 If you’re new to long‑term investing, we’ve also prepared a **companion guide** that covers:
 
@@ -89,7 +101,7 @@ Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
 
 ---
 
-## 📄 License
+### 📄 License
 
 This project is licensed under the MIT License – see [LICENSE](LICENSE) for details.
 
