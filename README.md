@@ -78,8 +78,8 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure Your Universe
-Edit config.yaml:
-```bash
+Edit `config.yaml`:
+```yaml
 market_settings:
   benchmark: "^JKSE"
   watchlist: ['BBCA.JK', 'ANTM.JK', 'NVDA', 'AAPL', 'PNLF.JK', 'TLKM.JK', 'ASII.JK']
@@ -125,7 +125,7 @@ Read it here: **[BEGINNER_GUIDE.md](https://github.com/johannesbambang/algorithm
 
 ## 📄 License
 
-This project is licensed under the MIT License – see **[LICENSE](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/LICENSE.md)** for details.
+This project is licensed under the MIT License – see **[LICENSE.md](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/LICENSE)** for details.
 
 ---
 
