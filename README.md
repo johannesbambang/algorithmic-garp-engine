@@ -115,7 +115,7 @@ If you’re new to long‑term investing, we’ve also prepared a **companion gu
 - Dividend compounding & tax‑free reinvestment strategies
 - Cost analysis (why low‑cost index funds win)
 
-Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md))**
+Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md)**
 
 ---
 
