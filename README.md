@@ -58,7 +58,7 @@ algorithmic-garp-engine/
 ├── main.py
 ├── requirements.txt
 ├── BEGINNER_GUIDE.md
-├── LICENSE
+├── LICENSE.md
 └── README.md
 ```
 
@@ -79,15 +79,11 @@ pip install -r requirements.txt
 
 ### 2. Configure Your Universe
 Edit `config.yaml`:
+
 ```yaml
 market_settings:
   benchmark: "^JKSE"
-  watchlist: ['BBCA.JK', 'ANTM.JK', 'NVDA', 'AAPL', 'PNLF.JK', 'TLKM.JK', 'ASII.JK']
-  lookback_period: "2y"
-
-test_settings:
-  test_watchlist: ["AAPL", "MSFT", "GOOG"]
-  test_period: "1mo"
+  ...
 ```
 
 ### 3. Run the Full Pipeline
@@ -119,13 +115,13 @@ If you’re new to long‑term investing, we’ve also prepared a **companion gu
 - Dividend compounding & tax‑free reinvestment strategies
 - Cost analysis (why low‑cost index funds win)
 
-Read it here: **[BEGINNER_GUIDE.md](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/BEGINNER_GUIDE.md)**
+Read it here: **[BEGINNER_GUIDE.md](BEGINNER_GUIDE.md))**
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License – see **[LICENSE.md](https://github.com/johannesbambang/algorithmic-garp-engine/blob/main/LICENSE)** for details.
+This project is licensed under the MIT License – see **[LICENSE.md](LICENSE.md)** for details.
 
 ---
 
